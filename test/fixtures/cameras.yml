@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  available: false
+  file: MyString
+  lat: MyString
+  lng: MyString
+  postcode: MyString
+  location: MyString
+
+two:
+  available: false
+  file: MyString
+  lat: MyString
+  lng: MyString
+  postcode: MyString
+  location: MyString

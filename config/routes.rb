@@ -1,4 +1,9 @@
 TflCameras::Application.routes.draw do
+
+  get "site/index"
+
+  root to: "site#index"
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
