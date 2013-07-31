@@ -3,7 +3,6 @@ $(function(){
   canvas,
   map;
 
-
   // create an options hash
   mapOptions = {
     zoom:12,
@@ -23,15 +22,19 @@ $(function(){
     cameras = _.shuffle(cameras_list);
     for (var i = 0; i < cameras.length; i++) {
       (function(index){
-        setTimeout(function(){put_points(index, cameras);}, index*30);
+        setTimeout(function(){put_points(index, cameras);}, index*25);
       })(i);
   };
 };
 
+// Make a content window
+var infowindow = new google.maps.InfoWindow({
+  content: '',
+});
+
+
+// Set Map markers and put into Google Map
 function put_points(i, cameras){
-    // Set Map markers and put into Google Map
-
-
     var marker = new google.maps.Marker({
       position: new google.maps.LatLng(cameras[i].lat,cameras[i].lng),
       map: map,
@@ -40,15 +43,17 @@ function put_points(i, cameras){
       animation: google.maps.Animation.DROP
     });
 
+    // add marker to markers array - May be useless
     markers[i] = marker;
 
+    // Create event for the marker
     google.maps.event.addListener(markers[i], 'click', function() {
       camera = cameras[this.camera_id];
+
+      // construct the infowindow content
       image = '<img src="http://www.tfl.gov.uk/tfl/livetravelnews/trafficcams/cctv/' + camera.file + '" >';
-      var contentString = '<div class="popup_content"><p>' + camera.location + '</p>' + image + '<p>' + camera.postcode + '</p></div>';
-      var infowindow = new google.maps.InfoWindow({
-        content: contentString,
-      });
+      infowindow.content = '<div class="popup_content"><p>' + camera.location + ', ' + camera.postcode  + '</p>' + image + '</div>';
+      // open the infowindow
       infowindow.open(map,markers[this.camera_id]);
     });
 };
