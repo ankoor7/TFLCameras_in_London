@@ -17,7 +17,7 @@ $(function(){
   map = new google.maps.Map(canvas, mapOptions);
   var cameras
   var markers = []
-  $.getJSON('http://localhost:3000/site/index.json', parse_cameras)
+  $.getJSON('http://fierce-sands-8960.herokuapp.com/site/index.json', parse_cameras)
   function parse_cameras(cameras_list) {
     cameras = _.shuffle(cameras_list);
     for (var i = 0; i < cameras.length; i++) {
