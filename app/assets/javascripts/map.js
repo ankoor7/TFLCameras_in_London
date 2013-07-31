@@ -22,7 +22,7 @@ $(function(){
     cameras = _.shuffle(cameras_list);
     for (var i = 0; i < cameras.length; i++) {
       (function(index){
-        setTimeout(function(){put_points(index, cameras);}, index*25);
+        setTimeout( function(){ put_points(index, cameras); }, index*25);
       })(i);
   };
 };
