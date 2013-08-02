@@ -1,11 +1,12 @@
 $(function(){
   var mapOptions,
   canvas,
-  map;
+  map,
+  initialBounds;
 
   // create an options hash
   mapOptions = {
-    zoom:12,
+    zoom:14,
     center:new google.maps.LatLng(51.508742, -0.120850),
     mapTypeId:google.maps.MapTypeId.ROADMAP
   };
@@ -20,21 +21,49 @@ $(function(){
   $.getJSON('/site/index.json', parse_cameras)
   function parse_cameras(cameras_list) {
     cameras = _.shuffle(cameras_list);
-    for (var i = 0; i < cameras.length; i++) {
+  };
+
+  // Make a content window
+  var infowindow = new google.maps.InfoWindow({
+    content: '',
+  });
+
+  // Add a listener to update after the user moves the map
+  google.maps.event.addListener(map, 'idle', function() {
+        try {
+          // Get the cameras within the bounds of the map
+          visible_cameras = _.filter(cameras, function(camera){
+            // Get Lat and Lng bounds of the map
+            initialBounds = map.getBounds();
+            console.log (initialBounds.contains((new google.maps.LatLng( camera.lat, camera.lng)))) ;
+            // Evaluates to true or false if the camera is in the map boundary
+            return (map.getBounds().contains((new google.maps.LatLng( camera.lat, camera.lng)))) ;
+            // initialBounds.contains(latLng: latlng_object);
+          });
+          // Find the cameras within the view and put them into cameras object
+          // visible_cameras = cameras
+
+          console.log(visible_cameras)
+
+          // Place the visible cameras on the map
+          set_point_placements(visible_cameras);
+        } catch( err ) {
+            console.log( err );
+        }
+    });
+
+
+  function set_point_placements(cameras) {
+      for (var i = 0; i < cameras.length; i++) {
       (function(index){
         setTimeout( function(){ put_points(index, cameras); }, index*25);
       })(i);
-  };
-};
-
-// Make a content window
-var infowindow = new google.maps.InfoWindow({
-  content: '',
-});
+    };
+  }
 
 
-// Set Map markers and put into Google Map
-function put_points(i, cameras){
+  // Set Map markers and put into Google Map
+  function put_points(i, cameras){
     var marker = new google.maps.Marker({
       position: new google.maps.LatLng(cameras[i].lat,cameras[i].lng),
       map: map,
@@ -56,6 +85,6 @@ function put_points(i, cameras){
       // open the infowindow
       infowindow.open(map,markers[this.camera_id]);
     });
-};
+  };
 
 });
