@@ -2,7 +2,9 @@ $(function(){
   var mapOptions,
   canvas,
   map,
-  initialBounds;
+  initialBounds,
+  present_cameras = [],
+  new_cameras;
 
   // create an options hash
   mapOptions = {
@@ -35,18 +37,31 @@ $(function(){
           visible_cameras = _.filter(cameras, function(camera){
             // Get Lat and Lng bounds of the map
             initialBounds = map.getBounds();
-            console.log (initialBounds.contains((new google.maps.LatLng( camera.lat, camera.lng)))) ;
+
             // Evaluates to true or false if the camera is in the map boundary
             return (map.getBounds().contains((new google.maps.LatLng( camera.lat, camera.lng)))) ;
             // initialBounds.contains(latLng: latlng_object);
           });
           // Find the cameras within the view and put them into cameras object
           // visible_cameras = cameras
+          console.log("visible_cameras");
+          console.log(visible_cameras);
 
-          console.log(visible_cameras)
+          // find the extra cameras to add to the map
+          new_cameras = _.difference(visible_cameras, present_cameras);
+          console.log("new_cameras");
+          console.log(new_cameras);
+          console.log("present_cameras");
+          console.log(present_cameras);
 
           // Place the visible cameras on the map
-          set_point_placements(visible_cameras);
+          set_point_placements(new_cameras);
+
+          // Record the new cameras in the present cameras variable;
+          present_cameras = present_cameras.concat(new_cameras);
+          console.log("present_cameras");
+          console.log(present_cameras);
+
         } catch( err ) {
             console.log( err );
         }
