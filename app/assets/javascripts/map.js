@@ -28,7 +28,7 @@ $(function(){
 
  // Text Overlay
 var myTitle = document.getElementById('title');
-map.controls[google.maps.ControlPosition.TOP_CENTER].push(myTitle);
+map.controls[google.maps.ControlPosition.TOP_RIGHT].push(myTitle);
 
 
   // Make a content window

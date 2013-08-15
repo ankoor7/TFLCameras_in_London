@@ -11,7 +11,6 @@ describe 'foo namespace rake task' do
     before do
       BarOutput.stub(:banner)
       BarOutput.stub(:puts)
-      Bar.stub(:bake) {"Bar Bar"}
     end
 
     let :run_rake_task do
@@ -23,6 +22,17 @@ describe 'foo namespace rake task' do
       Bar.any_instance.should_receive :bake
       run_rake_task
     end
+
+    it "should bake a bar again" do
+      Bar.any_instance.should_receive :bake
+      run_rake_task
+    end
+
+    it "should output two banners" do
+      BarOutput.should_receive(:banner).twice
+      run_rake_task
+    end
+
 
   end
 
