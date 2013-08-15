@@ -25,6 +25,12 @@ $(function(){
     cameras = _.shuffle(cameras_list);
   };
 
+
+ // Text Overlay
+var myTitle = document.getElementById('title');
+map.controls[google.maps.ControlPosition.TOP_CENTER].push(myTitle);
+
+
   // Make a content window
   var infowindow = new google.maps.InfoWindow({
     content: '',

@@ -9,6 +9,13 @@ gem 'pg'
 gem 'nokogiri'
 gem 'haml-rails'
 
+group :test do
+  gem 'rspec-rails'
+  gem "database_cleaner"
+  gem "shoulda"
+  gem "capybara"
+end
+
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
