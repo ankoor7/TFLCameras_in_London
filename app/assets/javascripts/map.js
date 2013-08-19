@@ -77,18 +77,20 @@ map.controls[google.maps.ControlPosition.TOP_RIGHT].push(myTitle);
   function set_point_placements(cameras) {
       for (var i = 0; i < cameras.length; i++) {
       (function(index){
-        setTimeout( function(){ put_points(index, cameras); }, index*25);
+        setTimeout( function(){ put_points(cameras); }, index*25);
       })(i);
     };
   }
 
 
   // Set Map markers and put into Google Map
-  function put_points(i, cameras){
+  function put_points(cameras){
+    _.map(cameras, function(camera) {
+      i = camera.id;
     var marker = new google.maps.Marker({
-      position: new google.maps.LatLng(cameras[i].lat,cameras[i].lng),
+      position: new google.maps.LatLng(camera.lat,camera.lng),
       map: map,
-      title: cameras[i].location,
+      title: camera.location,
       camera_id: i,
       animation: google.maps.Animation.DROP
     });
@@ -106,6 +108,7 @@ map.controls[google.maps.ControlPosition.TOP_RIGHT].push(myTitle);
       // open the infowindow
       infowindow.open(map,markers[this.camera_id]);
     });
+  });
   };
 
 });

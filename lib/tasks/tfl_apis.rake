@@ -1,11 +1,16 @@
 require 'open-uri'
 
+def reset_cameras
+  Camera.delete_all
+end
+
+
 namespace :tfl_apis do
   desc "fetching tfl camera api and saving data into camera table"
   task :cameras => :environment do
     url = 'http://www.tfl.gov.uk/tfl/livetravelnews/trafficcams/cctv/jamcams-camera-list.xml'
     doc = Nokogiri::XML(open(url))
-    Camera.delete_all
+    reset_cameras
     doc.xpath("//syndicatedFeed/cameraList/camera").each do |camera|
       attributes = {
         available: camera.attribute("available").to_s,
